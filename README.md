@@ -1,3 +1,7 @@
+# Нейминг и стиль
+1. ### .ts файлы именуются like-this
+2. ### .tsx файлы именуются LikeThis
+
 ## Генерация API запросов
 ```bash
 npx openapi-typescript-codegen --input ./openapi.json --output ./src/shared/api
