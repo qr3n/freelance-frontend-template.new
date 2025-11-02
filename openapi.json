@@ -1,1 +1,1591 @@
-{"openapi":"3.1.0","info":{"title":"FastAPI","version":"0.1.0"},"paths":{"/api/auth/code":{"post":{"tags":["auth"],"summary":"Send Code","operationId":"send_code_api_auth_code_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/SendCodeRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/auth/login":{"post":{"tags":["auth"],"summary":"Login","operationId":"login_api_auth_login_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/LoginRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/admin/auth/login":{"post":{"tags":["admin"],"summary":"Admin Login","operationId":"admin_login_api_admin_auth_login_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdminLoginRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/driver/auth/login":{"post":{"tags":["driver"],"summary":"Driver Login","operationId":"driver_login_api_driver_auth_login_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DriverLoginRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/driver/auth/signup":{"post":{"tags":["driver"],"summary":"Driver Login","operationId":"driver_login_api_driver_auth_signup_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DriverLoginRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/orders":{"get":{"tags":["order"],"summary":"Get Orders","operationId":"get_orders_api_orders_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}},"security":[{"OAuth2PasswordBearer":[]}]},"put":{"tags":["order"],"summary":"Update Order","operationId":"update_order_api_orders_put","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateOrderRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]},"post":{"tags":["order"],"summary":"Create Order","operationId":"create_order_api_orders_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateOrderRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/orders/cost":{"post":{"tags":["order"],"summary":"Calculate Cost","operationId":"calculate_cost_api_orders_cost_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CalculateCostRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/admin/orders":{"get":{"summary":"Get All Orders","operationId":"get_all_orders_api_admin_orders_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/admin/orders/close":{"post":{"summary":"Close Order","operationId":"close_order_api_admin_orders_close_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateOrderActiveRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/admin/orders/open":{"post":{"summary":"Open Order","operationId":"open_order_api_admin_orders_open_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateOrderActiveRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/admin/orders/status":{"put":{"summary":"Update Status","operationId":"update_status_api_admin_orders_status_put","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateOrderStatusRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/driver/orders":{"get":{"tags":["driver"],"summary":"Get All Drivers Orders","operationId":"get_all_drivers_orders_api_driver_orders_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/api/driver/orders/{order_id}":{"get":{"tags":["driver"],"summary":"Get Driver Order","operationId":"get_driver_order_api_driver_orders__order_id__get","security":[{"OAuth2PasswordBearer":[]}],"parameters":[{"name":"order_id","in":"path","required":true,"schema":{"type":"string","title":"Order Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/driver/orders/take":{"post":{"tags":["driver"],"summary":"Take Order","operationId":"take_order_api_driver_orders_take_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TakeOrderRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/driver/orders/progress/start":{"post":{"tags":["driver"],"summary":"Start Order Work","operationId":"start_order_work_api_driver_orders_progress_start_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/StartOrderProgressRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/driver/orders/progress/next":{"post":{"tags":["driver"],"summary":"Next Step Order","operationId":"next_step_order_api_driver_orders_progress_next_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/IncreaseOrderProgressRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/notifications/user/enable":{"post":{"tags":["notifications"],"summary":"Enable Notification","operationId":"enable_notification_api_notifications_user_enable_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/EnableNotificationsForUserRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/notifications/user/disable":{"post":{"tags":["notifications"],"summary":"Disable Notification","operationId":"disable_notification_api_notifications_user_disable_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DisableNotificationsForUserRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/notifications/test":{"post":{"tags":["notifications"],"summary":"Test","operationId":"test_api_notifications_test_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/profile":{"get":{"tags":["profile"],"summary":"Change Profile Info","operationId":"change_profile_info_api_profile_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}},"security":[{"OAuth2PasswordBearer":[]}]},"put":{"tags":["profile"],"summary":"Change Profile Info","operationId":"change_profile_info_api_profile_put","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ChangeProfileInfoRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/admin/tariff":{"get":{"summary":"Get Tariff","operationId":"get_tariff_api_admin_tariff_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}},"security":[{"OAuth2PasswordBearer":[]}]},"put":{"summary":"Update Tariff","operationId":"update_tariff_api_admin_tariff_put","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateTariffRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}}},"components":{"schemas":{"AdminLoginRequest":{"properties":{"login":{"type":"string","title":"Login"},"password":{"type":"string","title":"Password"}},"type":"object","required":["login","password"],"title":"AdminLoginRequest"},"CalculateCostRequest":{"properties":{"pickup_addresses":{"items":{"type":"string"},"type":"array","title":"Pickup Addresses"},"delivery_addresses":{"items":{"type":"string"},"type":"array","title":"Delivery Addresses"},"places_count":{"type":"integer","title":"Places Count"},"weight":{"type":"number","title":"Weight"}},"type":"object","required":["pickup_addresses","delivery_addresses","places_count","weight"],"title":"CalculateCostRequest"},"ChangeProfileInfoRequest":{"properties":{"name":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Name"},"surname":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Surname"},"patronymic":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Patronymic"},"phone":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Phone"}},"type":"object","title":"ChangeProfileInfoRequest"},"CreateOrderRequest":{"properties":{"shipment_type":{"type":"string","title":"Shipment Type"},"marketplace":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Marketplace"},"packing_type":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Packing Type"},"what_to_deliver":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"title":"What To Deliver"},"package_length":{"type":"integer","title":"Package Length"},"package_width":{"type":"integer","title":"Package Width"},"package_height":{"type":"integer","title":"Package Height"},"places_count":{"type":"integer","title":"Places Count"},"weight":{"type":"number","title":"Weight"},"pickup_addresses":{"items":{"type":"string"},"type":"array","title":"Pickup Addresses"},"delivery_addresses":{"items":{"type":"string"},"type":"array","title":"Delivery Addresses"},"comment":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Comment"},"sender_phone":{"type":"string","title":"Sender Phone"},"recipient_phone":{"type":"string","title":"Recipient Phone"},"pickup_date":{"type":"string","format":"date","title":"Pickup Date"},"delivery_date":{"type":"string","format":"date","title":"Delivery Date"},"pickup_time_from":{"type":"string","title":"Pickup Time From"},"pickup_time_to":{"type":"string","title":"Pickup Time To"},"delivery_time_from":{"type":"string","title":"Delivery Time From"},"delivery_time_to":{"type":"string","title":"Delivery Time To"}},"type":"object","required":["shipment_type","package_length","package_width","package_height","places_count","weight","pickup_addresses","delivery_addresses","sender_phone","recipient_phone","pickup_date","delivery_date","pickup_time_from","pickup_time_to","delivery_time_from","delivery_time_to"],"title":"CreateOrderRequest"},"DisableNotificationsForUserRequest":{"properties":{"access_token":{"type":"string","title":"Access Token"}},"type":"object","required":["access_token"],"title":"DisableNotificationsForUserRequest"},"DriverLoginRequest":{"properties":{"email":{"type":"string","title":"Email"},"password":{"type":"string","title":"Password"}},"type":"object","required":["email","password"],"title":"DriverLoginRequest"},"EnableNotificationsForUserRequest":{"properties":{"access_token":{"type":"string","title":"Access Token"}},"type":"object","required":["access_token"],"title":"EnableNotificationsForUserRequest"},"HTTPValidationError":{"properties":{"detail":{"items":{"$ref":"#/components/schemas/ValidationError"},"type":"array","title":"Detail"}},"type":"object","title":"HTTPValidationError"},"IncreaseOrderProgressRequest":{"properties":{"order_id":{"type":"string","title":"Order Id"}},"type":"object","required":["order_id"],"title":"IncreaseOrderProgressRequest"},"LoginRequest":{"properties":{"email":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Email"},"phone":{"anyOf":[{"type":"integer"},{"type":"null"}],"title":"Phone"},"code":{"type":"string","title":"Code"}},"type":"object","required":["code"],"title":"LoginRequest"},"SendCodeRequest":{"properties":{"email":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Email"},"phone":{"anyOf":[{"type":"integer"},{"type":"null"}],"title":"Phone"}},"type":"object","title":"SendCodeRequest"},"StartOrderProgressRequest":{"properties":{"order_id":{"type":"string","title":"Order Id"}},"type":"object","required":["order_id"],"title":"StartOrderProgressRequest"},"TakeOrderRequest":{"properties":{"order_id":{"type":"string","title":"Order Id"}},"type":"object","required":["order_id"],"title":"TakeOrderRequest"},"UpdateOrderActiveRequest":{"properties":{"order_id":{"type":"string","title":"Order Id"}},"type":"object","required":["order_id"],"title":"UpdateOrderActiveRequest"},"UpdateOrderRequest":{"properties":{"shipment_type":{"type":"string","title":"Shipment Type"},"marketplace":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Marketplace"},"packing_type":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Packing Type"},"what_to_deliver":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"title":"What To Deliver"},"package_length":{"type":"integer","title":"Package Length"},"package_width":{"type":"integer","title":"Package Width"},"package_height":{"type":"integer","title":"Package Height"},"places_count":{"type":"integer","title":"Places Count"},"weight":{"type":"number","title":"Weight"},"pickup_addresses":{"items":{"type":"string"},"type":"array","title":"Pickup Addresses"},"delivery_addresses":{"items":{"type":"string"},"type":"array","title":"Delivery Addresses"},"comment":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Comment"},"sender_phone":{"type":"string","title":"Sender Phone"},"recipient_phone":{"type":"string","title":"Recipient Phone"},"pickup_date":{"type":"string","format":"date","title":"Pickup Date"},"delivery_date":{"type":"string","format":"date","title":"Delivery Date"},"pickup_time_from":{"type":"string","title":"Pickup Time From"},"pickup_time_to":{"type":"string","title":"Pickup Time To"},"delivery_time_from":{"type":"string","title":"Delivery Time From"},"delivery_time_to":{"type":"string","title":"Delivery Time To"},"order_id":{"type":"string","title":"Order Id"}},"type":"object","required":["shipment_type","package_length","package_width","package_height","places_count","weight","pickup_addresses","delivery_addresses","sender_phone","recipient_phone","pickup_date","delivery_date","pickup_time_from","pickup_time_to","delivery_time_from","delivery_time_to","order_id"],"title":"UpdateOrderRequest"},"UpdateOrderStatusRequest":{"properties":{"order_id":{"type":"string","title":"Order Id"},"status":{"type":"string","title":"Status"}},"type":"object","required":["order_id","status"],"title":"UpdateOrderStatusRequest"},"UpdateTariffRequest":{"properties":{"price_per_km_rub":{"type":"number","title":"Price Per Km Rub"},"extra_cost_places_count":{"type":"integer","title":"Extra Cost Places Count"},"price_per_extra_place_rub":{"type":"number","title":"Price Per Extra Place Rub"},"extra_cost_weight_kg":{"type":"integer","title":"Extra Cost Weight Kg"},"price_per_extra_weight_kg_rub":{"type":"number","title":"Price Per Extra Weight Kg Rub"}},"type":"object","required":["price_per_km_rub","extra_cost_places_count","price_per_extra_place_rub","extra_cost_weight_kg","price_per_extra_weight_kg_rub"],"title":"UpdateTariffRequest"},"ValidationError":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"type":"array","title":"Location"},"msg":{"type":"string","title":"Message"},"type":{"type":"string","title":"Error Type"}},"type":"object","required":["loc","msg","type"],"title":"ValidationError"}},"securitySchemes":{"OAuth2PasswordBearer":{"type":"oauth2","flows":{"password":{"scopes":{},"tokenUrl":"token"}}}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Auth API",
+    "description": "API для авторизации с поддержкой email/password, Google и GitHub",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Register",
+        "description": "Регистрация нового пользователя",
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegistration"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Login",
+        "description": "Вход пользователя",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Logout",
+        "description": "Выход пользователя",
+        "operationId": "logout",
+        "parameters": [
+          {
+            "name": "revoke_all",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Revoke All"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Logout"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Get Current User Profile",
+        "description": "Получение профиля текущего пользователя",
+        "operationId": "get_current_user_profile",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Change Password",
+        "description": "Смена пароля",
+        "operationId": "change_password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordChange"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Change Password"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/sessions": {
+      "get": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Get User Sessions",
+        "description": "Получение списка активных сессий пользователя",
+        "operationId": "get_sessions",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SessionInfo"
+                  },
+                  "type": "array",
+                  "title": "Response Get Sessions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/sessions/{session_id}": {
+      "delete": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Revoke Session",
+        "description": "Отзыв конкретной сессии",
+        "operationId": "revoke_session",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Revoke Session"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/sessions/revoke-all": {
+      "post": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Revoke All Sessions",
+        "description": "Отзыв всех сессий пользователя",
+        "operationId": "revoke_all_sessions",
+        "parameters": [
+          {
+            "name": "except_current",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Except Current"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Revoke All Sessions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Google Auth",
+        "description": "Инициация авторизации через Google",
+        "operationId": "google_auth",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Google Auth"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Google Callback",
+        "description": "Обработка callback от Google",
+        "operationId": "google_callback",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Error"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/github": {
+      "get": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Github Auth",
+        "description": "Инициация авторизации через GitHub",
+        "operationId": "github_auth",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Github Auth"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/github/callback": {
+      "get": {
+        "tags": [
+          "authorization"
+        ],
+        "summary": "Github Callback",
+        "description": "Обработка callback от GitHub",
+        "operationId": "github_callback",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Error"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/templates": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Get Project Templates",
+        "description": "Получить список доступных шаблонов проектов",
+        "operationId": "get_project_templates",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTemplatesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects": {
+      "post": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Create Project",
+        "description": "Создать новый проект",
+        "operationId": "create_project",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Get User Projects",
+        "description": "Получить список проектов пользователя",
+        "operationId": "get_projects",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Номер страницы",
+              "default": 1,
+              "title": "Page"
+            },
+            "description": "Номер страницы"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Размер страницы",
+              "default": 10,
+              "title": "Size"
+            },
+            "description": "Размер страницы"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Фильтр по статусу",
+              "title": "Status"
+            },
+            "description": "Фильтр по статусу"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Get Project",
+        "description": "Получить проект по ID",
+        "operationId": "get_project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Update Project",
+        "description": "Обновить проект",
+        "operationId": "update_project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Delete Project",
+        "description": "Удалить проект (мягкое удаление)",
+        "operationId": "delete_project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/permanent": {
+      "delete": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Permanently Delete Project",
+        "description": "Окончательно удалить проект",
+        "operationId": "delete_project_permanently",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Проверка здоровья сервиса",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PasswordChange": {
+        "properties": {
+          "current_password": {
+            "type": "string",
+            "title": "Current Password",
+            "description": "Текущий пароль"
+          },
+          "new_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "New Password",
+            "description": "Новый пароль"
+          }
+        },
+        "type": "object",
+        "required": [
+          "current_password",
+          "new_password"
+        ],
+        "title": "PasswordChange",
+        "description": "Модель для смены пароля"
+      },
+      "ProjectCreateRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name",
+            "description": "Название проекта"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Описание проекта"
+          },
+          "project_type": {
+            "$ref": "#/components/schemas/ProjectType",
+            "description": "Тип проекта"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Settings",
+            "description": "Дополнительные настройки"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "project_type"
+        ],
+        "title": "ProjectCreateRequest",
+        "description": "Схема для создания проекта",
+        "example": {
+          "description": "Описание моего проекта",
+          "name": "my-awesome-project",
+          "project_type": "nodejs",
+          "settings": {
+
+          }
+        }
+      },
+      "ProjectListResponse": {
+        "properties": {
+          "projects": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectResponse"
+            },
+            "type": "array",
+            "title": "Projects"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          }
+        },
+        "type": "object",
+        "required": [
+          "projects",
+          "total",
+          "page",
+          "size"
+        ],
+        "title": "ProjectListResponse",
+        "description": "Схема ответа со списком проектов",
+        "example": {
+          "page": 1,
+          "projects": [],
+          "size": 10,
+          "total": 0
+        }
+      },
+      "ProjectResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "project_type": {
+            "$ref": "#/components/schemas/ProjectType"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProjectStatus"
+          },
+          "settings": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Settings"
+          },
+          "owner_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Owner Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "last_accessed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Accessed At"
+          },
+          "task_id": {
+            "type": "string",
+            "title": "Task Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "project_type",
+          "status",
+          "settings",
+          "owner_id",
+          "created_at",
+          "updated_at",
+          "last_accessed_at",
+          "task_id"
+        ],
+        "title": "ProjectResponse",
+        "description": "Схема ответа с информацией о проекте",
+        "example": {
+          "created_at": "2024-01-01T12:00:00Z",
+          "description": "Описание моего проекта",
+          "id": "123e4567-e89b-12d3-a456-426614174000",
+          "name": "my-awesome-project",
+          "owner_id": "123e4567-e89b-12d3-a456-426614174001",
+          "project_type": "nodejs",
+          "settings": {
+
+          },
+          "status": "active",
+          "updated_at": "2024-01-01T12:00:00Z"
+        }
+      },
+      "ProjectStatus": {
+        "type": "string",
+        "enum": [
+          "active",
+          "creating",
+          "failed",
+          "deleted"
+        ],
+        "title": "ProjectStatus"
+      },
+      "ProjectTemplateInfo": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "extensions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Extensions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "display_name",
+          "description",
+          "extensions"
+        ],
+        "title": "ProjectTemplateInfo",
+        "description": "Информация о шаблоне проекта",
+        "example": {
+          "description": "Базовый проект Node.js с современным стеком",
+          "display_name": "Node.js Project",
+          "extensions": [
+            "ms-vscode.vscode-typescript-next"
+          ],
+          "name": "nodejs"
+        }
+      },
+      "ProjectTemplatesResponse": {
+        "properties": {
+          "templates": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectTemplateInfo"
+            },
+            "type": "array",
+            "title": "Templates"
+          }
+        },
+        "type": "object",
+        "required": [
+          "templates"
+        ],
+        "title": "ProjectTemplatesResponse",
+        "description": "Список доступных шаблонов проектов",
+        "example": {
+          "templates": [
+            {
+              "description": "Базовый проект Node.js с современным стеком",
+              "display_name": "Node.js Project",
+              "extensions": [
+                "ms-vscode.vscode-typescript-next"
+              ],
+              "name": "nodejs"
+            }
+          ]
+        }
+      },
+      "ProjectType": {
+        "type": "string",
+        "enum": [
+          "nodejs"
+        ],
+        "title": "ProjectType"
+      },
+      "ProjectUpdateRequest": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Settings"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProjectStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ProjectUpdateRequest",
+        "description": "Схема для обновления проекта"
+      },
+      "SessionInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "last_accessed": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Accessed"
+          },
+          "ip_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ip Address",
+            "description": "IP адрес"
+          },
+          "user_agent": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Agent",
+            "description": "User Agent браузера"
+          },
+          "is_current": {
+            "type": "boolean",
+            "title": "Is Current",
+            "description": "Текущая сессия",
+            "default": false
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location",
+            "description": "Примерное местоположение"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "last_accessed"
+        ],
+        "title": "SessionInfo",
+        "description": "Информация о сессии пользователя"
+      },
+      "SessionResponse": {
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "csrf_token": {
+            "type": "string",
+            "title": "Csrf Token",
+            "description": "CSRF токен для защиты"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user",
+          "csrf_token",
+          "message"
+        ],
+        "title": "SessionResponse",
+        "description": "Модель ответа сессии"
+      },
+      "UserLogin": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+            "description": "Пароль пользователя"
+          },
+          "remember_me": {
+            "type": "boolean",
+            "title": "Remember Me",
+            "description": "Запомнить меня",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "UserLogin",
+        "description": "Модель для входа пользователя"
+      },
+      "UserProfile": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "first_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Name"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "is_verified": {
+            "type": "boolean",
+            "title": "Is Verified"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url",
+            "description": "URL аватара"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "description": "Провайдер аутентификации",
+            "default": "local"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "last_login": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Login"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "is_active",
+          "is_verified",
+          "created_at"
+        ],
+        "title": "UserProfile",
+        "description": "Расширенная модель профиля пользователя"
+      },
+      "UserRegistration": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password",
+            "description": "Пароль должен содержать минимум 8 символов"
+          },
+          "first_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Name",
+            "description": "Имя пользователя"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Name",
+            "description": "Фамилия пользователя"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "UserRegistration",
+        "description": "Модель для регистрации пользователя"
+      },
+      "UserResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "first_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Name"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "is_verified": {
+            "type": "boolean",
+            "title": "Is Verified"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "is_active",
+          "is_verified"
+        ],
+        "title": "UserResponse",
+        "description": "Модель ответа с данными пользователя"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

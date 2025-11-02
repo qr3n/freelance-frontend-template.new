@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/shared/shadcn/ui/dialog';
+} from '@shared/shadcn/ui/dialog';
 import {
   Drawer,
   DrawerContent,
@@ -16,12 +16,12 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/shared/shadcn/ui/drawer';
-import { cn } from '@/shared/shadcn/lib/utils';
-import { useMediaQuery } from '@/shared/hooks';
+} from '@shared/shadcn/ui/drawer';
+import { cn } from '@shared/shadcn/lib/utils';
+import { useMediaQuery } from '@shared/hooks';
 
 
-interface IProps extends PropsWithChildren {
+export interface IModalProps extends PropsWithChildren {
   trigger?: ReactElement;
   title: string | ReactElement | ReactElement[];
   description: string | ReactElement | ReactElement[];
@@ -38,7 +38,7 @@ interface IProps extends PropsWithChildren {
  * @param props.children - Дочерние элементы внутри модального окна.
  * @param props.isDesktop - Флаг, указывающий на использование десктопной версии.
  */
-const ModalContent: FC<Pick<IProps, 'title' | 'description' | 'children'> & { isDesktop: boolean }> = (props) => {
+const ModalContent: FC<Pick<IModalProps, 'title' | 'description' | 'children'> & { isDesktop: boolean }> = (props) => {
   const TitleComponent = props.isDesktop ? DialogTitle : DrawerTitle;
   const DescriptionComponent = props.isDesktop ? DialogDescription : DrawerDescription;
   const HeaderComponent = props.isDesktop ? DialogHeader : DrawerHeader;
@@ -66,7 +66,7 @@ const ModalContent: FC<Pick<IProps, 'title' | 'description' | 'children'> & { is
  * @param props.dialogStyle - Дополнительные стили для контейнера диалога.
  * @param props.modalStyle - Дополнительные стили для контейнера модального окна.
  */
-export const Modal: FC<IProps> = (props) => {
+export const Modal: FC<IModalProps> = (props) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
@@ -88,10 +88,16 @@ export const Modal: FC<IProps> = (props) => {
   const Trigger = isDesktop ? DialogTrigger : DrawerTrigger;
   const Content = isDesktop ? DialogContent : DrawerContent;
 
+  // Правильное применение стилей в зависимости от типа устройства
+  const contentClassName = cn(
+    isDesktop ? 'max-w-[425px] max-h-[90dvh]' : '',
+    isDesktop ? props.dialogStyle : props.modalStyle
+  );
+
   return (
     <Wrapper open={open} onOpenChange={handleOpenChange}>
       {props.trigger && <Trigger asChild>{props.trigger}</Trigger>}
-      <Content className={cn(isDesktop ? 'max-w-[425px]' : '', isDesktop ? props.dialogStyle : props.modalStyle)}>
+      <Content className={contentClassName}>
         <ModalContent title={props.title} description={props.description} isDesktop={isDesktop}>
           {props.children}
         </ModalContent>

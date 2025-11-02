@@ -4,7 +4,7 @@
 
 ## Генерация API запросов
 ```bash
-npx openapi-typescript-codegen --input ./openapi.json --output ./src/shared/api
+npx openapi-typescript-codegen --input ./openapi.json --output ./src/shared/api --client fetch --exportSchemas true --useOptions
 ```
 
 

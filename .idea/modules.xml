@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/freelance-frontend-template.iml" filepath="$PROJECT_DIR$/.idea/freelance-frontend-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/bloom.iml" filepath="$PROJECT_DIR$/.idea/bloom.iml" />
     </modules>
   </component>
 </project>
