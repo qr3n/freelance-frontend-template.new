@@ -1,0 +1,127 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { MdDashboard, MdAnalytics, MdSettings, MdPerson } from 'react-icons/md';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface NavItem {
+  href: string;
+  icon?: React.ReactNode;
+  label: string;
+}
+
+const navItems: NavItem[] = [
+  { href: '/bot/dashboard', icon: <MdDashboard size={24} />, label: 'Главная' },
+  { href: '/bot/analytics', icon: <MdAnalytics size={24} />, label: 'Аналитика' },
+  { href: '/bot/settings', icon: <MdSettings size={24} />, label: 'Настройки' },
+  { href: '/bot/profile', icon: <MdPerson size={24} />, label: 'Профиль' },
+];
+
+export const DashboardNavigation = () => {
+  const pathname = usePathname();
+  const [clickedPath, setClickedPath] = useState<string | null>(null);
+  const [hoveredPath, setHoveredPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    setClickedPath(null);
+  }, [pathname]);
+
+  const isActive = (href: string) => {
+    if (clickedPath) {
+      return clickedPath === href;
+    }
+    return pathname === href;
+  };
+
+  const handleClick = (href: string) => {
+    setClickedPath(href);
+  };
+
+  return (
+    <div className='absolute z-[500] bottom-8 h-min left-1/2 -translate-x-1/2 sm:translate-x-0 sm:top-1/2 sm:right-8 sm:left-auto flex sm:flex-col items-center justify-center gap-5 sm:-translate-y-1/2 rounded-full bg-emerald-800/10 py-4 px-8 sm:py-8 sm:px-4 backdrop-blur-sm'>
+      {navItems.map((item) => (
+        <div
+          key={item.href}
+          className='relative'
+          onMouseEnter={() => setHoveredPath(item.href)}
+          onMouseLeave={() => setHoveredPath(null)}
+        >
+          <Link
+            href={item.href}
+            onClick={() => handleClick(item.href)}
+            className='block'
+          >
+            <motion.div
+              className={`rounded-2xl w-[50px] cursor-pointer ${
+                isActive(item.href)
+                  ? 'bg-emerald-500 border-2 border-emerald-400'
+                  : 'bg-emerald-700/50'
+              }`}
+              animate={{
+                height: isActive(item.href) ? 80 : 50,
+                scale: hoveredPath === item.href && !isActive(item.href) ? 1.05 : 1,
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 25,
+              }}
+            >
+              <div className='w-full h-full flex items-center justify-center text-emerald-200'>
+                {item.icon}
+              </div>
+            </motion.div>
+          </Link>
+
+          {/* Label появляется при hover */}
+          <AnimatePresence>
+            {hoveredPath === item.href && (
+              <motion.div
+                initial={{ opacity: 0, x: -10, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -10, scale: 0.9 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 25,
+                }}
+                className='absolute right-full mr-4 -mt-4 top-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none hidden sm:block'
+              >
+                <div className='bg-emerald-900/95 backdrop-blur-sm text-emerald-100 px-4 py-2 rounded-xl shadow-lg border border-emerald-700/50 font-medium text-sm'>
+                  {item.label}
+                  {/* Стрелочка */}
+                  <div className='absolute left-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-emerald-900/95' />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Label для мобильной версии (снизу) */}
+          <AnimatePresence>
+            {hoveredPath === item.href && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 25,
+                }}
+                className='absolute top-full mt-4 left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none block sm:hidden'
+              >
+                <div className='bg-emerald-900/95 backdrop-blur-sm text-emerald-100 px-4 py-2 rounded-xl shadow-lg border border-emerald-700/50 font-medium text-sm'>
+                  {item.label}
+                  {/* Стрелочка */}
+                  <div className='absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[6px] border-b-emerald-900/95' />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      ))}
+    </div>
+  );
+};

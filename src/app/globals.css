@@ -5,6 +5,38 @@
 @layer base {
   * {
     @apply text-black;
-    @apply dark:text-white;
   }
+
+  body {
+    @apply bg-white;
+    @apply overflow-x-hidden;
+  }
+}
+
+@keyframes star-spin {
+  0%, 83.3% {
+    transform: rotate(0deg);
+  }
+  16.7% {
+    transform: rotate(180deg);
+  }
+}
+
+.animate-star-spin {
+  animation: star-spin 4.8s ease-out infinite;
+}
+
+[vaul-drawer-wrapper] {
+  border-radius: 30px !important;
+}
+
+:root {
+  --initial-border-radius: 30px;
+}
+
+.dotted-background {
+  background-image: url("data:image/svg+xml,%3Csvg width='75' height='75' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='6' cy='6' r='10.5' fill='%23dcdcdc'/%3E%3C/svg%3E");
+  background-size: 24px 24px;
+  background-position: -19px -19px;
+
 }
