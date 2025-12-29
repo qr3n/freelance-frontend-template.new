@@ -3,6 +3,20 @@ import { TableCreateData, TableUpdateData, TableBookingCreateData } from './type
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://aidronik.com';
 
+export const fetchTables = async (businessId: string): Promise<Table[]> => {
+  const response = await fetch(
+    `${API_URL}/api/v1/businesses/${businessId}/tables`,
+    {
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch tables');
+  }
+
+  return response.json();
+};
 
 export const fetchTable = async (
   businessId: string,
@@ -103,6 +117,24 @@ export const createTableBooking = async (
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.detail || 'Failed to create booking');
+  }
+
+  return response.json();
+};
+
+export const fetchTableBookings = async (
+  businessId: string,
+  tableId: string
+): Promise<TableBooking[]> => {
+  const response = await fetch(
+    `${API_URL}/api/v1/businesses/${businessId}/tables/${tableId}/bookings`,
+    {
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch table bookings');
   }
 
   return response.json();

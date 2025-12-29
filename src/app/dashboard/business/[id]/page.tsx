@@ -1,16 +1,10 @@
 import { Montserrat } from 'next/font/google';
 import { Lenis } from 'lenis/react';
-import { Settings2Icon } from 'lucide-react';
 import { CreateDishModal } from '@/features/dish/create/ui/CreateDishModal';
-import { Button } from '@/shared/shadcn/ui/button';
 import { DishesList } from '@/features/dish/create/ui/DishesList';
 import { fetchDishes } from '@/features/dish/create/model/api_ssr';
-import { DashboardNavigation } from '@/widgets/dashboard-navigation';
-import Link from 'next/link';
-import { FaBurger } from 'react-icons/fa6';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/shared/shadcn/ui/sheet';
-import { GiHamburgerMenu } from 'react-icons/gi';
 import { SetupTablesModal } from '@/widgets/setup-tables/ui/SetupTablesModal';
+import { DashboardMenu } from '@/widgets/dashboard-menu';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -48,31 +42,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
         </div>
         <div className="space-x-2 flex items-center justify-center">
           <CreateDishModal businessId={id}/>
-          <Sheet>
-            <SheetTrigger className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-forest-200 hover:bg-forest-300">
-              <GiHamburgerMenu />
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Меню</SheetTitle>
-                <SheetDescription>Выберите опцию</SheetDescription>
-              </SheetHeader>
-              <div className='px-4 flex flex-col gap-3'>
-                <div className='rounded-xl bg-forest-100 px-4 py-2 font-medium text-black'>Все боты</div>
-                <Link href={'/me'}>
-                  <div className='rounded-xl bg-forest-100 px-4 py-2 font-medium text-black'>Мой аккаунт</div>
-                </Link>
-                <Link href={'/settings'}><div className='rounded-xl bg-forest-100 px-4 py-2 font-medium text-black'>Настройки</div></Link>
-                <Link href={'/dashboard/create'} className={'w-full'}>
-                  <Button className=' bg-emerald-950 w-full rounded-full px-4 py-2 font-semibold text-white'>Создать бота</Button>
-                </Link>
-
-                <Link href={'/dashboard/create'} className={'w-full'}>
-                  <Button variant={'ghost'} className='  w-full rounded-full px-4 py-2 font-semibold text-black'>Выйти из аккаунта</Button>
-                </Link>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <DashboardMenu />
         </div>
       </div>
 

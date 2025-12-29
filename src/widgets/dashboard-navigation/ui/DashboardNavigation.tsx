@@ -1,27 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MdDashboard, MdAnalytics, MdSettings, MdPerson } from "react-icons/md";
+import { MdDashboard, MdAnalytics, MdSettings, MdPerson, MdRestaurant, MdTableBar } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
+import { ROUTES } from "@/shared/config";
 
 interface NavItem {
   href: string;
   icon?: React.ReactNode;
   label: string;
 }
-
-const navItems: NavItem[] = [
-  { href: "/dashboard/business", icon: <MdDashboard size={20} />, label: "Главная" },
-  {
-    href: "/dashboard/analytics",
-    icon: <MdAnalytics size={20} />,
-    label: "Аналитика",
-  },
-  { href: "/dashboard/settings", icon: <MdSettings size={20} />, label: "Настройки" },
-  { href: "/dashboard/profile", icon: <MdPerson size={20} />, label: "Профиль" },
-];
 
 export const DashboardNavigation = () => {
   const pathname = usePathname();
@@ -32,11 +22,64 @@ export const DashboardNavigation = () => {
     setClickedPath(null);
   }, [pathname]);
 
+  const businessIdMatch = pathname?.match(/\/dashboard\/business\/([^/]+)/);
+  const businessId = businessIdMatch ? businessIdMatch[1] : null;
+
+  const navItems = useMemo<NavItem[]>(() => {
+    if (businessId) {
+      return [
+        { 
+          href: ROUTES.DASHBOARD, 
+          icon: <MdDashboard size={20} />, 
+          label: "Все боты" 
+        },
+        {
+          href: ROUTES.DASHBOARD_BUSINESS(businessId),
+          icon: <MdRestaurant size={20} />,
+          label: "Меню",
+        },
+        {
+          href: ROUTES.DASHBOARD_BUSINESS_TABLES(businessId),
+          icon: <MdTableBar size={20} />,
+          label: "Столики",
+        },
+        { 
+          href: ROUTES.DASHBOARD_ANALYTICS, 
+          icon: <MdAnalytics size={20} />, 
+          label: "Аналитика" 
+        },
+        { 
+          href: ROUTES.DASHBOARD_PROFILE, 
+          icon: <MdPerson size={20} />, 
+          label: "Профиль" 
+        },
+      ];
+    }
+
+    return [
+      { 
+        href: ROUTES.DASHBOARD, 
+        icon: <MdDashboard size={20} />, 
+        label: "Главная" 
+      },
+      {
+        href: ROUTES.DASHBOARD_ANALYTICS,
+        icon: <MdAnalytics size={20} />,
+        label: "Аналитика",
+      },
+      { 
+        href: ROUTES.DASHBOARD_PROFILE, 
+        icon: <MdPerson size={20} />, 
+        label: "Профиль" 
+      },
+    ];
+  }, [businessId]);
+
   const isActive = (href: string) => {
     if (clickedPath) {
       return pathname?.includes(clickedPath);
     }
-    return pathname?.includes(href);
+    return pathname === href || pathname?.startsWith(href + '/');
   };
 
   const handleClick = (href: string) => {

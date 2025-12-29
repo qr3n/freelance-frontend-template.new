@@ -7,6 +7,9 @@ import { SvgSkeleton } from '@/shared/ui/svg-skeleton/SvgSkeleton';
 import ImageToVideo from '@/shared/ui/image-to-video/ui/ImageToVideo';
 import { PointerHighlight } from '@/shared/ui/pointer-highlight/PointerHighlight';
 import { Button } from '@/shared/shadcn/ui/button';
+import { Modal } from '@/shared/ui/modal';
+import { CreateDishForm } from '@/features/dish/create/ui/CreateDishForm';
+import { useState } from 'react';
 
 interface DishesListProps {
   businessId?: string;
@@ -15,7 +18,11 @@ interface DishesListProps {
 
 export function DishesList({ businessId, initialDishes }: DishesListProps) {
   const { data: dishes = [], isLoading } = useDishes(businessId, initialDishes);
+  const [isOpen, setIsOpen] = useState(false);
 
+  const handleSuccess = () => {
+    setIsOpen(false);
+  };
   const yourSvg2 = `
   <svg width="440" height="473" viewBox="0 0 440 473" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M343.5 67.5001C368.1 107.3 373.986 151 387.186 204.5C400.386 258 446.5 308.668 439 359.968C431.5 411.268 387.4 460.068 336.4 470.268C285.4 480.368 227.3 451.868 170.8 427.668C114.3 403.368 59.4001 383.468 29.1001 343.268C-1.19993 303.068 -6.69994 242.668 8.00006 190.568C22.8001 138.468 57.9001 94.6682 100.1 57.8682C142.2 21.1682 177.4 2.00004 228 0.500039C278.6 -1.09996 318.9 27.7001 343.5 67.5001Z" fill="#BB004B"/>
@@ -108,7 +115,17 @@ export function DishesList({ businessId, initialDishes }: DishesListProps) {
           </PointerHighlight>
         </div>
 
-        <Button className='bg-forest-200 mt-5 text-forest-800 hover:bg-forest-300 z-50'>Создать позицию</Button>
+        <Modal
+          dialogStyle="max-w-4xl  rounded-t-[48px]"
+          title="Создать новое блюдо"
+          description="Заполните информацию о блюде"
+          trigger={        <Button className='bg-forest-200 mt-5 text-forest-800 hover:bg-forest-300 z-50'>Создать позицию</Button>
+          }
+          open={isOpen}
+          onOpenChange={setIsOpen}
+        >
+          <CreateDishForm businessId={businessId!} onSuccess={handleSuccess} />
+        </Modal>
       </div>
     );
   }
