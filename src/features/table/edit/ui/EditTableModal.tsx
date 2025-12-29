@@ -218,7 +218,7 @@ export const EditTableModal = ({ businessId, table, open, onOpenChange }: EditTa
 
           <Button
             type="submit"
-            loading={isUpdating}
+            isLoading={isUpdating}
             className="flex-1 bg-emerald-950 hover:bg-emerald-900"
           >
             Сохранить

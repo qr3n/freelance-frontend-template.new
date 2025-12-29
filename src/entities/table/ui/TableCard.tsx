@@ -1,7 +1,7 @@
 'use client';
 
 import { Table, TableStatus } from '../model/types';
-import { MdTableBar, MdPeople, MdCheckCircle, MdCancel, MdAccessTime } from 'react-icons/md';
+import { MdTableBar, MdPeople } from 'react-icons/md';
 
 interface TableCardProps {
   table: Table;
@@ -12,13 +12,26 @@ export const TableCard = ({ table, onClick }: TableCardProps) => {
   const getStatusColor = (status: TableStatus) => {
     switch (status) {
       case TableStatus.AVAILABLE:
-        return 'bg-emerald-500 text-emerald-950';
+        return 'bg-forest-100';
       case TableStatus.BOOKED:
-        return 'bg-amber-500 text-amber-950';
+        return 'bg-amber-100';
       case TableStatus.OCCUPIED:
-        return 'bg-rose-500 text-rose-950';
+        return 'bg-rose-100';
       default:
-        return 'bg-gray-500 text-gray-950';
+        return 'bg-gray-100';
+    }
+  };
+
+  const getStatusIconColor = (status: TableStatus) => {
+    switch (status) {
+      case TableStatus.AVAILABLE:
+        return 'text-emerald-700';
+      case TableStatus.BOOKED:
+        return 'text-amber-700';
+      case TableStatus.OCCUPIED:
+        return 'text-rose-700';
+      default:
+        return 'text-gray-700';
     }
   };
 
@@ -35,63 +48,57 @@ export const TableCard = ({ table, onClick }: TableCardProps) => {
     }
   };
 
-  const getStatusIcon = (status: TableStatus) => {
-    switch (status) {
-      case TableStatus.AVAILABLE:
-        return <MdCheckCircle size={20} />;
-      case TableStatus.BOOKED:
-        return <MdAccessTime size={20} />;
-      case TableStatus.OCCUPIED:
-        return <MdCancel size={20} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <article
       onClick={onClick}
-      className={`relative rounded-3xl p-6 bg-white border-2 transition-all duration-300 ${
+      className={`relative rounded-3xl overflow-hidden bg-white  transition-all duration-300 group ${
         table.is_active
-          ? 'border-forest-200 hover:border-forest-400 hover:shadow-lg cursor-pointer'
-          : 'border-gray-200 opacity-60'
+          ? ' cursor-pointer'
+          : 'opacity-60'
       }`}
     >
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-forest-100 flex items-center justify-center">
-            <MdTableBar size={24} className="text-forest-700" />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold text-gray-900">
-              Стол #{table.table_number}
-            </h3>
-            <p className="text-sm text-gray-500">Этаж {table.floor}</p>
-          </div>
+      {/* Верхняя часть - визуальный акцент */}
+      <div className={`relative h-48 rounded-3xl ${getStatusColor(table.status)} transition-all duration-300 group-hover:brightness-95 flex items-center justify-center`}>
+        <div className={`w-24 h-24 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
+          <MdTableBar size={48} className={`${getStatusIconColor(table.status)} transition-colors duration-300`} />
         </div>
-
-        <span
-          className={`px-3 py-1.5 text-xs font-semibold rounded-full flex items-center gap-1.5 ${getStatusColor(
-            table.status
-          )}`}
-        >
-          {getStatusIcon(table.status)}
-          {getStatusLabel(table.status)}
-        </span>
+        
+        {!table.is_active && (
+          <div className="absolute top-3 right-3 px-3 py-1 bg-gray-900/70 backdrop-blur-sm text-white text-xs font-medium rounded-full">
+            Неактивен
+          </div>
+        )}
       </div>
 
-      <div className="flex items-center gap-2 text-gray-600">
-        <MdPeople size={20} />
-        <span className="text-sm font-medium">
-          Вместимость: {table.capacity} {table.capacity === 1 ? 'человек' : 'человека'}
-        </span>
-      </div>
+      {/* Нижняя часть - информация */}
+      <div className="p-5">
+        <h3 className="text-xl font-semibold text-gray-900 mb-1">
+          Стол #{table.table_number}
+        </h3>
+        
+        <p className="text-sm text-gray-500 mb-3">
+          Этаж {table.floor}
+        </p>
 
-      {!table.is_active && (
-        <div className="mt-3 text-xs text-gray-500 italic">
-          Столик неактивен
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-gray-600">
+            <MdPeople size={20} />
+            <span className="text-sm font-medium">
+              {table.capacity} {table.capacity === 1 ? 'чел.' : 'чел.'}
+            </span>
+          </div>
+
+          <span className={`px-3 h-[28px] flex items-center text-xs font-medium rounded-xl ${
+            table.status === TableStatus.AVAILABLE 
+              ? 'bg-emerald-100 text-emerald-700'
+              : table.status === TableStatus.BOOKED
+              ? 'bg-amber-100 text-amber-700'
+              : 'bg-rose-100 text-rose-700'
+          }`}>
+            {getStatusLabel(table.status)}
+          </span>
         </div>
-      )}
+      </div>
     </article>
   );
 };

@@ -55,7 +55,7 @@ export const CreateTableModal = ({ businessId }: CreateTableModalProps) => {
       onOpenChange={setOpen}
       trigger={
         <Button className="bg-emerald-950 hover:bg-emerald-900 text-white rounded-full px-6 py-2 font-semibold flex items-center gap-2">
-          <MdAdd size={20} />
+          <MdAdd size={20} className='fill-white' color={'white'}/>
           Добавить столик
         </Button>
       }
@@ -116,7 +116,7 @@ export const CreateTableModal = ({ businessId }: CreateTableModalProps) => {
           </Button>
           <Button
             type="submit"
-            loading={isPending}
+            isLoading={isPending}
             className="flex-1 bg-emerald-950 hover:bg-emerald-900"
           >
             Создать

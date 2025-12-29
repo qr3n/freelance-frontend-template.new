@@ -12,8 +12,8 @@ export default async function Tables({ params }: { params: Promise<{ id: string 
   const initialTables = await fetchTables(id);
 
   return (
-    <div className='w-full min-h-screen bg-gray-50'>
-      <div className="h-[64px] bg-white z-[50] px-4 sm:px-12 items-center fixed w-full top-0 left-0 flex justify-between shadow-sm">
+    <div className='w-full min-h-screen bg-white'>
+      <div className="h-[64px] bg-white 2xl:bg-transparent z-[50] px-4 sm:px-12 items-center fixed w-full top-0 left-0 flex justify-between">
         <div className='flex gap-1 sm:gap-3 items-center justify-center'>
           <svg xmlns="http://www.w3.org/2000/svg" className='w-[32px] h-[32px] sm:w-[48px] sm:h-[48px]' viewBox="0 0 424 369" fill="none">
             <g clipPath="url(#clip0_1_10)">
@@ -39,9 +39,8 @@ export default async function Tables({ params }: { params: Promise<{ id: string 
         </div>
       </div>
       
-      <div className='pt-[80px] pb-8'>
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-semibold mb-6">Управление столиками</h1>
+      <div className='pt-[64px]'>
+        <div className="relative flex flex-col items-center pb-24 px-4">
           <HydrationBoundary state={dehydrate(queryClient)}>
             <TablesList businessId={id} initialTables={initialTables} />
           </HydrationBoundary>
