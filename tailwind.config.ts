@@ -8,99 +8,127 @@ export default {
   theme: {
   	extend: {
   		colors: {
-  			background: 'var(--background)',
-  			foreground: 'var(--foreground)',
-				zinc: {
-					900: '#131313'
-				},
-				emerald: {
-					50: '#f0fef2',
-					100: '#dcfce1',
-					200: '#bbf7c7',
-					300: '#86efaa',
-					400: '#4ade80',
-					500: '#41E95A', // Base color
-					600: '#16a34a',
-					700: '#15803d',
-					800: '#166534',
-					900: '#14532d',
-					950: '#052e16'
-				},
-
-				// Lime Green (#B1F262)
-				lime: {
-					50: '#f7fee7',
-					100: '#ecfccb',
-					200: '#d9f99d',
-					300: '#bef264',
-					400: '#B1F262', // Base color
-					500: '#84cc16',
-					600: '#65a30d',
-					700: '#4d7c0f',
-					800: '#365314',
-					900: '#1a2e05',
-					950: '#0f1419'
-				},
-
-				// Golden Yellow (#F2D062)
-				golden: {
-					50: '#fefce8',
-					100: '#fef9c3',
-					200: '#fef08a',
-					300: '#fde047',
-					400: '#F2D062', // Base color
-					500: '#eab308',
-					600: '#ca8a04',
-					700: '#a16207',
-					800: '#854d0e',
-					900: '#713f12',
-					950: '#422006'
-				},
-
-				// Sage Green (#6E885E)
-				sage: {
-					50: '#f6f7f4',
-					100: '#e8ebe3',
-					200: '#d2d8c8',
-					300: '#b5c0a5',
-					400: '#94a382',
-					500: '#6E885E', // Base color
-					600: '#5a7049',
-					700: '#48593a',
-					800: '#3c4a31',
-					900: '#343f2b',
-					950: '#1a2215'
-				},
-
-				// Forest Green (#5E8874)
-				forest: {
-					50: '#f4f7f6',
-					100: '#e3ece8',
-					200: '#c8dbd2',
-					300: '#a5c2b3',
-					400: '#7fa590',
-					500: '#5E8874', // Base color
-					600: '#4a6d5d',
-					700: '#3d584c',
-					800: '#34493f',
-					900: '#2d3e36',
-					950: '#18221c'
-				},
-
-				// Taupe Brown (#88745E)
-				taupe: {
-					50: '#f7f5f3',
-					100: '#ebe6e0',
-					200: '#d8cfc2',
-					300: '#c1b19f',
-					400: '#a69280',
-					500: '#88745E', // Base color
-					600: '#6f5d4a',
-					700: '#5c4c3e',
-					800: '#4e4136',
-					900: '#443830',
-					950: '#251f19'
-				}
+  			background: 'hsl(var(--background))',
+  			foreground: 'hsl(var(--foreground))',
+  			zinc: {
+  				'900': '#131313'
+  			},
+  			emerald: {
+  				'50': '#f0fef2',
+  				'100': '#dbf6df',
+  				'200': '#b5e6bf',
+  				'300': '#90e39e',
+  				'400': '#64e876',
+  				'500': '#4CDA6A',
+  				'600': '#16a34a',
+  				'700': '#15803d',
+  				'800': '#166534',
+  				'900': '#14532d',
+  				'950': '#052e16'
+  			},
+  			lime: {
+  				'50': '#f7fee7',
+  				'100': '#ecfccb',
+  				'200': '#d9f99d',
+  				'300': '#bef264',
+  				'400': '#B1F262',
+  				'500': '#84cc16',
+  				'600': '#65a30d',
+  				'700': '#4d7c0f',
+  				'800': '#365314',
+  				'900': '#1a2e05',
+  				'950': '#0f1419'
+  			},
+  			golden: {
+  				'50': '#fefce8',
+  				'100': '#fef9c3',
+  				'200': '#fef08a',
+  				'300': '#fde047',
+  				'400': '#F2D062',
+  				'500': '#eab308',
+  				'600': '#ca8a04',
+  				'700': '#a16207',
+  				'800': '#854d0e',
+  				'900': '#713f12',
+  				'950': '#422006'
+  			},
+  			sage: {
+  				'50': '#f6f7f4',
+  				'100': '#e8ebe3',
+  				'200': '#d2d8c8',
+  				'300': '#b5c0a5',
+  				'400': '#94a382',
+  				'500': '#6E885E',
+  				'600': '#5a7049',
+  				'700': '#48593a',
+  				'800': '#3c4a31',
+  				'900': '#343f2b',
+  				'950': '#1a2215'
+  			},
+  			forest: {
+  				'50': '#f4f7f6',
+  				'100': '#e3ece8',
+  				'200': '#c8dbd2',
+  				'300': '#a5c2b3',
+  				'400': '#7fa590',
+  				'500': '#5E8874',
+  				'600': '#4a6d5d',
+  				'700': '#3d584c',
+  				'800': '#34493f',
+  				'900': '#2d3e36',
+  				'950': '#18221c'
+  			},
+  			taupe: {
+  				'50': '#f7f5f3',
+  				'100': '#ebe6e0',
+  				'200': '#d8cfc2',
+  				'300': '#c1b19f',
+  				'400': '#a69280',
+  				'500': '#88745E',
+  				'600': '#6f5d4a',
+  				'700': '#5c4c3e',
+  				'800': '#4e4136',
+  				'900': '#443830',
+  				'950': '#251f19'
+  			},
+  			card: {
+  				DEFAULT: 'hsl(var(--card))',
+  				foreground: 'hsl(var(--card-foreground))'
+  			},
+  			popover: {
+  				DEFAULT: 'hsl(var(--popover))',
+  				foreground: 'hsl(var(--popover-foreground))'
+  			},
+  			primary: {
+  				DEFAULT: 'hsl(var(--primary))',
+  				foreground: 'hsl(var(--primary-foreground))'
+  			},
+  			secondary: {
+  				DEFAULT: 'hsl(var(--secondary))',
+  				foreground: 'hsl(var(--secondary-foreground))'
+  			},
+  			muted: {
+  				DEFAULT: 'hsl(var(--muted))',
+  				foreground: 'hsl(var(--muted-foreground))'
+  			},
+  			accent: {
+  				DEFAULT: 'hsl(var(--accent))',
+  				foreground: 'hsl(var(--accent-foreground))'
+  			},
+  			destructive: {
+  				DEFAULT: 'hsl(var(--destructive))',
+  				foreground: 'hsl(var(--destructive-foreground))'
+  			},
+  			border: 'hsl(var(--border))',
+  			input: 'hsl(var(--input))',
+  			ring: 'hsl(var(--ring))',
+  			chart: {
+  				'1': 'hsl(var(--chart-1))',
+  				'2': 'hsl(var(--chart-2))',
+  				'3': 'hsl(var(--chart-3))',
+  				'4': 'hsl(var(--chart-4))',
+  				'5': 'hsl(var(--chart-5))'
+  			}
   		},
   		screens: {
   			'xs-h': {

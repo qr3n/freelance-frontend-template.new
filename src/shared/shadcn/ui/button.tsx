@@ -10,11 +10,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-black text-white hover:bg-black/60",
+          "bg-black text-white hover:bg-black/95",
         destructive:
           "bg-red-600 text-white hover:bg-red-700",
         outline:
-          "border border-black bg-transparent text-black hover:bg-black hover:text-white",
+          "border border-zinc-200 bg-transparent text-black hover:bg-zinc-100",
         secondary:
           "bg-zinc-600 text-white hover:bg-zinc-700",
         ghost: "hover:bg-black/10 text-black hover:text-black",
@@ -38,17 +38,87 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  isLoading?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, isLoading = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
+
+    // Определяем цвет скелетона в зависимости от варианта кнопки
+    const getSkeletonVariant = () => {
+      switch (variant) {
+        case 'default':
+        case 'destructive':
+        case 'secondary':
+          return 'light' as const
+        case 'outline':
+        case 'ghost':
+        case 'link':
+        default:
+          return 'light' as const
+      }
+    }
+
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
+      <>
+        <style>{`
+          @keyframes skeleton-wave {
+            0% {
+              transform: translateX(-100%) rotate(10deg);
+            }
+            100% {
+              transform: translateX(200%) rotate(10deg);
+            }
+          }
+
+          .button-skeleton-wave {
+            position: relative;
+            overflow: hidden;
+          }
+
+          .button-skeleton-wave::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 0;
+            width: 50%;
+            height: 200%;
+            animation: skeleton-wave 0.7s infinite ease-in-out;
+            transform-origin: center;
+          }
+
+          .button-skeleton-light::after {
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.15),
+              transparent
+            );
+          }
+
+          .button-skeleton-dark::after {
+            background: linear-gradient(
+              90deg,
+              transparent, 
+              rgba(255, 255, 255, 0.03),
+              transparent
+            );
+          }
+        `}</style>
+        <Comp
+          className={cn(
+            buttonVariants({ variant, size, className }),
+            isLoading && "button-skeleton-wave",
+            isLoading && `button-skeleton-${getSkeletonVariant()}`
+          )}
+          ref={ref}
+          disabled={isLoading || props.disabled}
+          {...props}
+        >
+          {props.children}
+        </Comp>
+      </>
     )
   }
 )

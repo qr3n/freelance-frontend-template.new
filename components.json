@@ -6,10 +6,11 @@
   "tailwind": {
     "config": "tailwind.config.ts",
     "css": "src/app/globals.css",
-    "baseColor": "zinc",
-    "cssVariables": false,
+    "baseColor": "neutral",
+    "cssVariables": true,
     "prefix": ""
   },
+  "iconLibrary": "lucide",
   "aliases": {
     "components": "@/shared/shadcn",
     "utils": "@/shared/shadcn/lib/utils",
@@ -17,5 +18,5 @@
     "lib": "@/shared/shadcn/lib",
     "hooks": "@/shared/shadcn/hooks"
   },
-  "iconLibrary": "lucide"
+  "registries": {}
 }

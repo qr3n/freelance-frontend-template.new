@@ -61,7 +61,7 @@ const ModalContent: FC<Pick<IProps, 'title' | 'description' | 'children'> & { is
   return (
     <div className="relative">
       <HeaderComponent>
-        <TitleComponent className="flex gap-2 items-center text-white">{props.title}</TitleComponent>
+        <TitleComponent className="flex gap-2 items-center x">{props.title}</TitleComponent>
         <DescriptionComponent>{props.description}</DescriptionComponent>
       </HeaderComponent>
       <div className={'pt-0 px-4 md:pt-4 md:px-0'}>{props.children}</div>
@@ -124,15 +124,15 @@ export const Modal: FC<IProps> = (props) => {
     setShowConfirm(false);
   }, []);
 
-  const Wrapper = Drawer;
-  const Trigger = DrawerTrigger;
-  const Content = DrawerContent;
+  const Wrapper = isDesktop ? Dialog : Drawer;
+  const Trigger = isDesktop ? DialogTrigger : DrawerTrigger;
+  const Content = isDesktop ? DialogContent : DrawerContent;
 
   return (
     <>
       <Wrapper open={open} onOpenChange={handleOpenChange}>
         {props.trigger && <Trigger asChild>{props.trigger}</Trigger>}
-        <Content className={cn(isDesktop ? 'max-w-[425px] will-change-transform transform-gpu' : 'will-change-transform transform-gpu', isDesktop ? props.dialogStyle : props.modalStyle)}>
+        <Content className={cn(isDesktop ? 'max-w-[425px]  transform-gpu' : ' transform-gpu', isDesktop ? props.dialogStyle : props.modalStyle)}>
           <ModalContent title={props.title} description={props.description} isDesktop={isDesktop}>
             {props.children}
           </ModalContent>
@@ -140,7 +140,7 @@ export const Modal: FC<IProps> = (props) => {
       </Wrapper>
 
       <AlertDialog open={showConfirm} onOpenChange={setShowConfirm}>
-        <AlertDialogContent className='will-change-transform transform-gpu max-w-[85dvw] sm:max-w-[400px] !rounded-3xl'>
+        <AlertDialogContent className=' transform-gpu max-w-[85dvw] sm:max-w-[400px] !rounded-3xl'>
           <AlertDialogHeader>
             <AlertDialogTitle>
               {props.confirmTitle || 'Вы уверены?'}

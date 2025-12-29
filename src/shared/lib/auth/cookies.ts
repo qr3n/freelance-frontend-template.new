@@ -1,3 +1,4 @@
+
 import { cookies } from 'next/headers';
 
 export const COOKIE_NAMES = {
@@ -14,3 +15,5 @@ export const getSessionToken = async (): Promise<string | null> => {
   const cookieStore = await cookies();
   return cookieStore.get(COOKIE_NAMES.SESSION_TOKEN)?.value || null;
 };
+
+

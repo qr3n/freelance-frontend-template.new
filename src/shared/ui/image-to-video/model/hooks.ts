@@ -1,279 +1,144 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { MediaLoadState } from './types';
 
-export const useImageToVideoWithMask = (
-  imageSrc: string,
-  videoSrc: string,
-  svgMaskSrc: string, // SVG маска
-  onVideoStart?: () => void,
-  onError?: (error: Error) => void,
-  preload: 'auto' | 'metadata' | 'none' = 'auto'
-) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imageRef = useRef<HTMLImageElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const maskCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const animationFrameRef = useRef<number>(null);
+interface VideoSource {
+  src: string;
+  preload?: boolean;
+}
 
+// Hook
+export const useMultiVideoWithMask = (
+  videos: VideoSource[],
+  svgMaskSrc: string,
+  step: number,
+  onVideoStart?: (step: number) => void,
+  onVideoEnd?: (step: number) => void,
+  onError?: (error: Error) => void,
+  preloadAll: boolean = true,
+  loop: boolean = false // Новый параметр для зацикливания
+) => {
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [maskUrl, setMaskUrl] = useState<string>('');
   const [loadState, setLoadState] = useState<MediaLoadState & { maskLoaded: boolean }>({
-    imageLoaded: false,
+    imageLoaded: true,
     videoLoaded: false,
     maskLoaded: false,
     isPlaying: false,
     error: null
   });
+  const [videosLoaded, setVideosLoaded] = useState<boolean[]>(new Array(videos.length).fill(false));
+  const hasPlayedRef = useRef<number>(-1);
 
-  // Создание маски из SVG
-  const createSVGMask = useCallback(async (svgSrc: string, width: number, height: number) => {
-    try {
-      // Загружаем SVG
-      const response = await fetch(svgSrc);
-      const svgText = await response.text();
-
-      // Создаем Blob из SVG
-      const svgBlob = new Blob([svgText], { type: 'image/svg+xml' });
-      const svgUrl = URL.createObjectURL(svgBlob);
-
-      // Создаем изображение из SVG
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-
-      return new Promise<HTMLCanvasElement>((resolve, reject) => {
-        img.onload = () => {
-          // Создаем canvas для маски
-          const maskCanvas = document.createElement('canvas');
-          maskCanvas.width = width;
-          maskCanvas.height = height;
-          const maskCtx = maskCanvas.getContext('2d');
-
-          if (!maskCtx) {
-            reject(new Error('Failed to get mask canvas context'));
-            return;
-          }
-
-          // Рисуем SVG на canvas маски
-          maskCtx.drawImage(img, 0, 0, width, height);
-
-          // Освобождаем URL
-          URL.revokeObjectURL(svgUrl);
-          resolve(maskCanvas);
-        };
-
-        img.onerror = () => {
-          URL.revokeObjectURL(svgUrl);
-          reject(new Error('Failed to load SVG mask'));
-        };
-
-        img.src = svgUrl;
-      });
-    } catch (error) {
-      throw new Error(`Failed to create SVG mask: ${error}`);
-    }
-  }, []);
-
-  // Функция для применения маски и рисования изображения
-  const drawImageWithMask = useCallback((
-    canvas: HTMLCanvasElement,
-    image: HTMLImageElement,
-    maskCanvas: HTMLCanvasElement
-  ) => {
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Метод 1: Использование globalCompositeOperation
-    // Сначала рисуем маску
-    ctx.drawImage(maskCanvas, 0, 0, canvas.width, canvas.height);
-
-    // Устанавливаем режим композиции для применения маски
-    ctx.globalCompositeOperation = 'source-in';
-
-    // Рисуем изображение с применением маски
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-    // Возвращаем обычный режим композиции
-    ctx.globalCompositeOperation = 'source-over';
-  }, []);
-
-  // Функция для применения маски и рисования видео
-  const drawVideoWithMask = useCallback((
-    canvas: HTMLCanvasElement,
-    video: HTMLVideoElement,
-    maskCanvas: HTMLCanvasElement
-  ) => {
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Применяем маску
-    ctx.drawImage(maskCanvas, 0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'source-in';
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'source-over';
-  }, []);
-
-  // Загрузка и создание маски
+  // Load mask
   useEffect(() => {
-    if (!svgMaskSrc || !canvasRef.current) return;
+    if (!svgMaskSrc) return;
 
-    const canvas = canvasRef.current;
-
-    createSVGMask(svgMaskSrc, canvas.width, canvas.height)
-      .then((maskCanvas) => {
-        maskCanvasRef.current = maskCanvas;
+    fetch(svgMaskSrc)
+      .then(response => response.text())
+      .then(svgText => {
+        const svgBlob = new Blob([svgText], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(svgBlob);
+        setMaskUrl(url);
         setLoadState(prev => ({ ...prev, maskLoaded: true }));
       })
       .catch((error) => {
-        setLoadState(prev => ({ ...prev, error: error.message }));
-        onError?.(error);
+        const err = new Error(`Failed to load mask: ${error.message}`);
+        setLoadState(prev => ({ ...prev, error: err.message }));
+        onError?.(err);
       });
-  }, [svgMaskSrc, createSVGMask, onError]);
-
-  // Функция для рисования изображения на canvas с маской
-  const drawImage = useCallback((canvas: HTMLCanvasElement, image: HTMLImageElement) => {
-    if (maskCanvasRef.current) {
-      drawImageWithMask(canvas, image, maskCanvasRef.current);
-    } else {
-      // Fallback без маски
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-    }
-  }, [drawImageWithMask]);
-
-  // Функция для рисования видео на canvas с маской
-  const drawVideo = useCallback((canvas: HTMLCanvasElement, video: HTMLVideoElement) => {
-    if (maskCanvasRef.current) {
-      drawVideoWithMask(canvas, video, maskCanvasRef.current);
-    } else {
-      // Fallback без маски
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    }
-  }, [drawVideoWithMask]);
-
-  // Анимационный цикл для видео
-  const renderVideoFrame = useCallback(() => {
-    const canvas = canvasRef.current;
-    const video = videoRef.current;
-
-    if (!canvas || !video || video.paused || video.ended) {
-      return;
-    }
-
-    drawVideo(canvas, video);
-    animationFrameRef.current = requestAnimationFrame(renderVideoFrame);
-  }, [drawVideo]);
-
-  // Загрузка изображения
-  useEffect(() => {
-    if (!imageSrc) return;
-
-    const image = new Image();
-    image.crossOrigin = 'anonymous';
-
-    image.onload = () => {
-      imageRef.current = image;
-      setLoadState(prev => ({ ...prev, imageLoaded: true }));
-
-      // Рисуем изображение на canvas сразу после загрузки
-      const canvas = canvasRef.current;
-      if (canvas && image.complete) {
-        drawImage(canvas, image);
-      }
-    };
-
-    image.onerror = () => {
-      const error = new Error(`Failed to load image: ${imageSrc}`);
-      setLoadState(prev => ({ ...prev, error: error.message }));
-      onError?.(error);
-    };
-
-    image.src = imageSrc;
 
     return () => {
-      if (imageRef.current) {
-        imageRef.current.onload = null;
-        imageRef.current.onerror = null;
+      if (maskUrl) {
+        URL.revokeObjectURL(maskUrl);
       }
     };
-  }, [imageSrc, drawImage, onError]);
+  }, [svgMaskSrc]);
 
-  // Загрузка видео
-  useEffect(() => {
-    if (!videoSrc) return;
-
-    const video = document.createElement('video');
-    video.crossOrigin = 'anonymous';
-    video.preload = preload;
-    video.muted = true;
-    video.playsInline = true;
-    video.loop = true;
-
-    const handleCanPlayThrough = () => {
-      videoRef.current = video;
-      setLoadState(prev => ({ ...prev, videoLoaded: true }));
-    };
-
-    const handleError = () => {
-      const error = new Error(`Failed to load video: ${videoSrc}`);
-      setLoadState(prev => ({ ...prev, error: error.message }));
-      onError?.(error);
-    };
-
-    video.addEventListener('canplaythrough', handleCanPlayThrough);
-    video.addEventListener('error', handleError);
-    video.src = videoSrc;
-
-    return () => {
-      video.removeEventListener('canplaythrough', handleCanPlayThrough);
-      video.removeEventListener('error', handleError);
-      if (videoRef.current === video) {
-        video.pause();
-        videoRef.current = null;
-      }
-    };
-  }, [videoSrc, preload, onError]);
-
-  // Запуск видео после полной загрузки
-  useEffect(() => {
-    if (!loadState.videoLoaded || loadState.isPlaying) return;
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    if (!video || !canvas) return;
-
-    video.play().then(() => {
-      setLoadState(prev => ({ ...prev, isPlaying: true }));
-      onVideoStart?.();
-      renderVideoFrame();
-    }).catch((error) => {
-      const err = new Error(`Failed to play video: ${error.message}`);
-      setLoadState(prev => ({ ...prev, error: err.message }));
-      onError?.(err);
+  // Track video load states
+  const handleVideoLoaded = useCallback((index: number) => {
+    setVideosLoaded(prev => {
+      const newState = [...prev];
+      newState[index] = true;
+      return newState;
     });
-  }, [loadState.videoLoaded, loadState.isPlaying, renderVideoFrame, onVideoStart, onError]);
-
-  // Очистка анимации при размонтировании
-  useEffect(() => {
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
   }, []);
 
+  // Handle video end with loop support
+  const handleVideoEnd = useCallback((currentIndex: number) => {
+    onVideoEnd?.(currentIndex + 1);
+
+    if (loop) {
+      const currentVideo = videoRefs.current[currentIndex];
+      if (currentVideo) {
+        currentVideo.currentTime = 0;
+        currentVideo.play()
+          .catch((error) => {
+            const err = new Error(`Failed to loop video: ${error.message}`);
+            setLoadState(prev => ({ ...prev, error: err.message }));
+            onError?.(err);
+          });
+      }
+    }
+  }, [loop, onVideoEnd, onError]);
+
+  // Set up video ended event listeners
+  useEffect(() => {
+    videoRefs.current.forEach((video, index) => {
+      if (video) {
+        const handler = () => handleVideoEnd(index);
+        video.addEventListener('ended', handler);
+        return () => video.removeEventListener('ended', handler);
+      }
+    });
+  }, [handleVideoEnd]);
+
+  // Play video when step changes
+  useEffect(() => {
+    const currentIndex = step - 1;
+    if (currentIndex < 0 || currentIndex >= videos.length) return;
+    if (!loadState.maskLoaded || !videosLoaded[currentIndex]) return;
+    if (hasPlayedRef.current === currentIndex) return;
+
+    const currentVideo = videoRefs.current[currentIndex];
+    if (!currentVideo) return;
+
+    // Reset and hide all other videos
+    videoRefs.current.forEach((video, idx) => {
+      if (video && idx !== currentIndex) {
+        video.pause();
+        video.currentTime = 0;
+        video.style.opacity = '0';
+      }
+    });
+
+    // Show and play current video
+    currentVideo.style.opacity = '1';
+    currentVideo.currentTime = 0;
+
+    hasPlayedRef.current = currentIndex;
+
+    currentVideo.play()
+      .then(() => {
+        setLoadState(prev => ({ ...prev, isPlaying: true }));
+        onVideoStart?.(step);
+      })
+      .catch((error) => {
+        const err = new Error(`Failed to play video ${step}: ${error.message}`);
+        setLoadState(prev => ({ ...prev, error: err.message }));
+        onError?.(err);
+      });
+  }, [step, videos.length, loadState.maskLoaded, videosLoaded, onVideoStart, onError]);
+
+  // Reset played flag when step changes
+  useEffect(() => {
+    hasPlayedRef.current = -1;
+  }, [step]);
+
   return {
-    canvasRef,
+    videoRefs,
+    maskUrl,
     loadState,
-    imageRef,
-    videoRef,
-    maskCanvasRef
+    videosLoaded,
+    handleVideoLoaded
   };
 };
