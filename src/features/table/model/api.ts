@@ -1,7 +1,7 @@
 import type { Table, TableBooking, BulkTablesData, BulkTablesResponse } from './types';
 import { TableCreateData, TableUpdateData, TableBookingCreateData } from './types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://aidronik.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export const fetchTables = async (businessId: string): Promise<Table[]> => {
   const response = await fetch(

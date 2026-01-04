@@ -6,7 +6,7 @@ import type {
   VerifyCodeRequest,
 } from './types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://aidronik.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 const API_PREFIX = '/api/v1';
 
 class AuthAPI {

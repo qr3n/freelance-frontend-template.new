@@ -1,6 +1,6 @@
 import type { Business, Dish } from '@/entities/dish/model/types';
 import { fetchWithCookies } from '@/shared/lib/auth/fetch';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://aidronik.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export const fetchDishes = async (businessId?: string): Promise<Dish[]> => {
   const url = businessId

@@ -1,6 +1,6 @@
 export async function deleteSession(sessionId: string): Promise<void> {
   const response = await fetch(
-    `https://aidronik.com/api/v1/auth/sessions/${sessionId}`,
+    `http://localhost:8000/api/v1/auth/sessions/${sessionId}`,
     {
       method: 'DELETE',
       credentials: 'include',

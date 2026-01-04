@@ -2,7 +2,7 @@
 import type { Dish } from '@/entities/dish/model/types';
 import { DishCreateData, DishCreateInput, DishUpdateData, DishUpdateInput } from './types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://aidronik.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 /**
  * Convert File to base64 data URL

@@ -90,7 +90,7 @@ export const CreateTableForm = ({ businessId, onSuccess }: CreateTableFormProps)
       <div className="flex gap-2 pt-4">
         <Button
           type="submit"
-          loading={isPending}
+          isLoading={isPending}
           className="w-full bg-emerald-950 hover:bg-emerald-900"
         >
           Создать столик

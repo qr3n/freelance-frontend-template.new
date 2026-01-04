@@ -15,7 +15,7 @@ import { ButtonProps } from "@/shared/shadcn/ui/button";
 import { motion, MotionValue, useInView, useScroll, useTransform } from 'framer-motion';
 import "react-device-frameset/styles/marvel-devices.min.css";
 import { TextBackgroundSvg } from "@/shared/ui/svg/ui/TextBackgroundSvg";
-import { useIntersectionObserver } from "@/shared/hooks";
+import { useIntersectionObserver, useMediaQuery } from '@/shared/hooks';
 import {
   Carousel,
   CarouselContent,
@@ -38,6 +38,7 @@ import { SvgSkeleton } from '@/shared/ui/svg-skeleton/SvgSkeleton';
 import ScrollAnimatedLine from '@/line';
 import { useTextRevealAnimation } from '@/app/useTextRevealAnimation';
 import { InteractiveHoverButton } from '@/shared/shadcn/abstract-glassy-shader';
+import { LoginModal } from '@/features/auth/login/ui/LoginModal';
 
 
 
@@ -170,7 +171,7 @@ const LargeButton = memo((props: ButtonProps) => {
       textHoverColor={'#ffffff'}
       dotSize={'w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 lg:w-3 lg:h-3 xl:w-3.5 xl:h-3.5 2xl:w-4 2xl:h-4 rounded-full'}
       dotColor="#000000"
-      dotInitialPosition={{ left: "13%" }}
+      dotInitialPosition={{ left: "11%" }}
       textTranslate="translate-x-1 sm:translate-x-2 md:translate-x-3 lg:translate-x-4 xl:translate-x-6 group-hover:translate-x-[150px] sm:group-hover:translate-x-[180px] md:group-hover:translate-x-[200px]"
       hoverTranslate="translate-x-[150px] sm:translate-x-[380px] md:translate-x-[200px] group-hover:-translate-x-5 sm:group-hover:-translate-x-4.5 md:group-hover:-translate-x-4 lg:group-hover:-translate-x-3.5 xl:group-hover:-translate-x-3"
       arrowSize="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 xl:h-8 xl:w-8 2xl:h-9 2xl:w-9"
@@ -261,6 +262,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const section1ref = useRef(null)
   const section1InView = useInView(section1ref)
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
 
   const [currentSection, setCurrentSection] = useState('section1');
@@ -388,13 +390,11 @@ export default function Home() {
     router.prefetch("/dashboard/create");
   }, [router]);
 
-  const handleContinue = () => {
+  const handleContinue = (customPath?: string) => {
     setIsExiting(true);
 
-    console.log('exit')
-
     setTimeout(() => {
-      router.push("/dashboard/create");
+      router.push(customPath || "/dashboard/create");
     }, 400);
   };
 
@@ -454,32 +454,36 @@ export default function Home() {
     [60, 15, 0],
   );
   const videoY = useTransform(scrollYProgress, [0.4, 1], [0, 200]);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   // Контент для рендеринга
   const content = (
 
     <div ref={containerRef}>
-      <div className={'fixed top-8 flex gap-4 right-8 z-[50000] '}>
-        <InteractiveHoverButton
-          text={'ВХОД'}
-          duration={350}
-          textColor={'#ffffff'}
-          textHoverColor={'#ffffff'}
-          dotSize={'w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 lg:w-2 lg:h-2 rounded-full'}
-          dotColor="#ffffff"
-          dotHoverColor={'#46cd48'}
-          dotInitialPosition={{ left: "20%" }}
-          textTranslate="translate-x-0.5 sm:translate-x-1 md:translate-x-1.5 lg:translate-x-2 group-hover:translate-x-[80px] sm:group-hover:translate-x-[100px] md:group-hover:translate-x-[120px]"
-          hoverTranslate="translate-x-[80px] sm:translate-x-[100px] md:translate-x-[120px] group-hover:-translate-x-3 sm:group-hover:-translate-x-2.5 md:group-hover:-translate-x-2 lg:group-hover:-translate-x-1.5"
-          arrowSize="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 lg:h-6 lg:w-6"
-          className={cn(
-            "w-[100px] sm:w-[120px] md:w-[140px] lg:w-[160px]",
-            "text-sm sm:text-base md:text-lg lg:text-xl",
-            "py-2.5 sm:py-3 md:py-3.5 lg:py-4 xl:py-4",
-            "px-4",
-            `transition-all ${section1InView ? 'bg-forest-800' : 'bg-forest-900'}`
-          )}
-        />
+      <div className={'fixed top-3 right-3 md:top-8 flex gap-4 md:right-8 z-[50000] '}>
+        <LoginModal onSuccess={() => handleContinue('/dashboard')} open={isLoginOpen} onOpenChange={setIsLoginOpen}  trigger={
+          <InteractiveHoverButton
+            onClick={() => setIsLoginOpen(prev => !prev)}
+            text={'ВХОД'}
+            duration={350}
+            textColor={'#ffffff'}
+            textHoverColor={'#ffffff'}
+            dotSize={'w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 lg:w-2 lg:h-2 rounded-full'}
+            dotColor="#ffffff"
+            dotHoverColor={'#46cd48'}
+            dotInitialPosition={{ left: "20%" }}
+            textTranslate="translate-x-0.5 sm:translate-x-1 md:translate-x-1.5 lg:translate-x-2 group-hover:translate-x-[80px] sm:group-hover:translate-x-[100px] md:group-hover:translate-x-[120px]"
+            hoverTranslate="translate-x-[80px] sm:translate-x-[100px] md:translate-x-[120px] group-hover:-translate-x-3 sm:group-hover:-translate-x-2.5 md:group-hover:-translate-x-2 lg:group-hover:-translate-x-1.5"
+            arrowSize="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 lg:h-6 lg:w-6"
+            className={cn(
+              "w-[100px] sm:w-[120px] md:w-[140px] lg:w-[160px]",
+              "text-sm sm:text-base md:text-lg lg:text-xl",
+              "py-2.5 sm:py-3 md:py-3.5 lg:py-4 xl:py-4",
+              "px-4",
+              `transition-all ${section1InView ? 'bg-forest-800' : 'bg-forest-900'}`
+            )}
+          />
+        }/>
       </div>
 
 
@@ -490,7 +494,7 @@ export default function Home() {
         </div>
 
         <div ref={section1ref} className="overflow-hidden w-full flex items-center justify-center">
-          <div className="w-full max-w-[1750px] px-8 py-24 flex-col md:flex-row flex relative justify-between">
+          <div className="w-full max-w-[1750px] px-8 py-[72px] sm:py-24 flex-col md:flex-row flex relative justify-between">
             <div>
               <motion.div className="absolute z-50">
                 <h1  className="text-white sm:ml-2 md:ml-4 lg:ml-8 xl:ml-12 2xl:ml-12 text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold">
@@ -504,23 +508,23 @@ export default function Home() {
                 </h1>
 
                 <LargeButton
-                  onClick={handleContinue}
+                  onClick={() => handleContinue('/dashboard/create')}
                   className="mt-8 sm:mt-12 md:mt-16 lg:mt-20 rotate-[-5deg] bg-white text-emerald-950 hover:bg-emerald-100 transition-colors duration-200"
                 />
               </motion.div>
 
               <ParallaxStar
                 y={star1Y}
-                className="absolute top-8 right-8 sm:top-32 sm:right-0"
+                className="absolute top-[45%] left-8 sm:left-auto sm:top-32 sm:right-0"
                 starColor={"#14532d"}
                 shimmerColor={"#4ade80"}
                 delay={0}
                 shimmerSize={50}
                 shimmerResponsiveSizes={{
                   sm: 70,
-                  md: 100,
-                  lg: 150,
-                  xl: 150,
+                  md: 80,
+                  lg: 90,
+                  xl: 100,
                   '2xl': 150
                 }}
               />
@@ -567,7 +571,7 @@ export default function Home() {
                   />
                 }
                 loop
-                className={'mt-52 sm:mt-64 md:mt-0 z-[5000]'}
+                className={'mt-52 sm:mt-64 md:mt-0 z-[100]'}
                 step={1}
                 imageSrc="/robot.png"
                 videos={[{ src: '/robot3.mp4' }]}
@@ -588,8 +592,8 @@ export default function Home() {
 
       <Section bgColor={"bg-emerald-50"} height={'h-[300dvh]'}>
         <ScrollAnimatedLine
-          className='mt-24 sm:mt-[260px] md:mt-[280px] lg:mt-[340px] xl:mt-[400px] 2xl:mt-96'
-          strokeColor="#7d967d"
+          className='mt-[420px] sm:mt-[260px] md:mt-[280px] lg:mt-[340px] xl:mt-[400px] 2xl:mt-96'
+          strokeColor={isDesktop ? "#7d967d" : "#7d967d"}
           strokeWidth={24}
           zIndex={5}
           startOffset={30} // Линия начнет рисоваться после 50vh скролла
@@ -626,7 +630,7 @@ export default function Home() {
             </h1>
 
             <motion.div
-              style={{ y: iphoneY }}
+              style={{ y: isDesktop ? iphoneY : 'auto' }}
               className='sm:absolute flex flex-col gap-12  font-medium  text-forest-950 left-1/2  bottom-[-200px] 2xl:-bottom-[280px] w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] xl:w-[550px] 2xl:w-[600px]'>
               <span className='text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl'>Полностью автоматическое реагирование нашего агента позволяет вам не тратить деньги, время и ресурсы на поиск нужного работника-консультанта.</span>
 
@@ -651,7 +655,7 @@ export default function Home() {
               />
             </motion.div>
           </div>
-          <div className='mt-32 ml-0 sm:ml-6 md:ml-12 lg:ml-16 xl:ml-20 2xl:ml-24'>
+          <div className='mt-[70px] ml-0 sm:ml-6 md:ml-12 lg:ml-16 xl:ml-20 2xl:ml-24'>
             <ImageToVideo
               loadingElement={
                 <SvgSkeleton
@@ -848,7 +852,7 @@ export default function Home() {
             : "circle(0% at 50% 50%)",
         }}
         transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-        className="fixed inset-0 bg-white z-[6000] max-w-[100vw] overflow-hidden"
+        className="fixed inset-0 bg-white z-[6000000] max-w-[100vw] overflow-hidden"
       />
 
       <ReactLenis

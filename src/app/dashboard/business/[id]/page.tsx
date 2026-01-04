@@ -3,8 +3,11 @@ import { Lenis } from 'lenis/react';
 import { CreateDishModal } from '@/features/dish/create/ui/CreateDishModal';
 import { DishesList } from '@/features/dish/create/ui/DishesList';
 import { fetchDishes } from '@/features/dish/create/model/api_ssr';
+import { fetchBusiness } from '@/features/business/create/model/api';
 import { SetupTablesModal } from '@/widgets/setup-tables/ui/SetupTablesModal';
 import { DashboardMenu } from '@/widgets/dashboard-menu';
+import { EditBusinessModal } from '@/features/business/edit';
+import { DeleteBusinessButton } from '@/features/business/delete';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -16,6 +19,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const { id } = await params;
   const { setup } = await searchParams;
   const initialDishes = await fetchDishes(id);
+  const business = await fetchBusiness(id);
 
   return (
     <div className={`bg-white w-full h-[100dvh]`}>
@@ -41,6 +45,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
           <h1 className='text-lg sm:text-2xl font-medium'>AIDronik</h1>
         </div>
         <div className="space-x-2 flex items-center justify-center">
+          <EditBusinessModal business={business} />
+          <DeleteBusinessButton businessId={id} />
           <CreateDishModal businessId={id}/>
           <DashboardMenu />
         </div>

@@ -1,7 +1,7 @@
 import type { Session } from '@/entities/session/model/types';
 import { User } from '@/entities/auth/model/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://aidronik.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export async function getCurrentUser(): Promise<User> {
   const response = await fetch(

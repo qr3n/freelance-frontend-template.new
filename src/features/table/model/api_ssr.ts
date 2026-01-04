@@ -2,7 +2,7 @@
 // Table API functions
 import type { Table, TableBooking } from '@/features/table/model/types';
 import { fetchWithCookies } from '@/shared/lib/auth/fetch';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://aidronik.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export const fetchTables = async (businessId: string): Promise<Table[]> => {
   const response = await fetchWithCookies(

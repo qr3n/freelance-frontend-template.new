@@ -27,7 +27,7 @@ const bulkUpdateTables = async (
   businessId: string,
   data: BulkTablesData
 ): Promise<BulkTablesResponse> => {
-  const response = await fetch(`https://aidronik.com/api/v1/businesses/${businessId}/tables/bulk`, {
+  const response = await fetch(`http://localhost:8000/api/v1/businesses/${businessId}/tables/bulk`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
 // features/business/create/model/api.ts
 import type { Business, BusinessCreateData } from './types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://aidronik.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export const createBusiness = async (data: BusinessCreateData): Promise<Business> => {
   const response = await fetch(`${API_URL}/api/v1/businesses`, {
@@ -28,6 +28,18 @@ export const fetchBusinesses = async (): Promise<Business[]> => {
 
   if (!response.ok) {
     throw new Error('Failed to fetch businesses');
+  }
+
+  return response.json();
+};
+
+export const fetchBusiness = async (businessId: string): Promise<Business> => {
+  const response = await fetch(`${API_URL}/api/v1/businesses/${businessId}`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch business');
   }
 
   return response.json();

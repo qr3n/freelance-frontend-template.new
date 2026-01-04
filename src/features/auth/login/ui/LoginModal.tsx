@@ -1,7 +1,7 @@
 // features/authentication/login/ui/LoginModal.tsx
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Modal } from '@/shared/ui/modal';
@@ -10,11 +10,13 @@ import { SendCodeForm } from '@/features/auth/send-code/ui/SendCodeForm';
 import { VerifyCodeForm } from '@/features/auth/verify-code/ui/VerifyCodeForm';
 import ImageToVideo from '@/shared/ui/image-to-video/ui/ImageToVideo';
 import { AnimatedStar } from '@/shared/ui/animated-star/ui/AnimatedStar';
+import { SvgSkeleton } from '@/shared/ui/svg-skeleton/SvgSkeleton';
 
 interface LoginModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   onSuccess?: () => void;
+  trigger?: ReactElement
 }
 
 type Step = 'send-code' | 'verify-code';
@@ -23,6 +25,7 @@ export const LoginModal: FC<LoginModalProps> = ({
                                                   open,
                                                   onOpenChange,
                                                   onSuccess,
+  trigger
                                                 }) => {
   const [step, setStep] = useState<Step>('send-code');
   const [contact, setContact] = useState<string>('');
@@ -47,7 +50,9 @@ export const LoginModal: FC<LoginModalProps> = ({
     try {
       await verifyCodeMutation.mutateAsync({ contact, code });
       toast.success('Вход выполнен успешно!');
-      onOpenChange(false);
+      if (onOpenChange) {
+        onOpenChange(false);
+      }
       onSuccess?.();
 
       setStep('send-code');
@@ -63,7 +68,7 @@ export const LoginModal: FC<LoginModalProps> = ({
     try {
       await sendCodeMutation.mutateAsync({ contact });
       toast.success('Код отправлен повторно!');
-    } catch (error) {
+    } catch (_) {
       toast.error('Не удалось отправить код');
     }
   };
@@ -73,8 +78,16 @@ export const LoginModal: FC<LoginModalProps> = ({
       setStep('send-code');
       setContact('');
     }
-    onOpenChange(newOpen);
+    if (onOpenChange) {
+      onOpenChange(newOpen);
+    }
   };
+  const yourSvg = `
+    <svg width="1057" height="1110" viewBox="0 0 1057 1110" xmlns="http://www.w3.org/2000/svg">
+      <path d="M728.084 111.493C617.793 61.2244 477.767 85.6827 349.591 127.284C221.66 169.027 105.333 227.771 76.9286 315.202C48.5242 402.634 108.042 518.753 136.617 649.383C165.192 780.013 163.211 925.051 234.843 998.947C306.423 1072.65 451.564 1075.02 545.624 1015.19C639.439 955.221 774.562 876.34 774.562 725.292C774.562 603.292 907.654 511.617 913.195 399.213C918.737 286.808 838.375 161.761 728.084 111.493Z" fill="#c5d9ca"/>
+      <path d="M728.084 111.493C617.793 61.2244 477.767 85.6827 349.591 127.284C221.66 169.027 105.333 227.771 76.9286 315.202C48.5242 402.634 108.042 518.753 136.617 649.383C165.192 780.013 163.211 925.051 234.843 998.947C306.423 1072.65 451.564 1075.02 545.624 1015.19C639.439 955.221 774.562 876.34 774.562 725.292C774.562 603.292 907.654 511.617 913.195 399.213C918.737 286.808 838.375 161.761 728.084 111.493Z" fill="black" fill-opacity="0.2"/>
+    </svg>
+  `
 
   return (
     <Modal
@@ -82,11 +95,26 @@ export const LoginModal: FC<LoginModalProps> = ({
       onOpenChange={handleOpenChange}
       title={''}
       description={''}
-      dialogStyle="max-w-[920px]"
+      dialogStyle="max-w-[920px] z-[50000]"
+      modalStyle={'z-[50000]'}
+      trigger={trigger}
     >
       <div className='flex relative'>
-        <div className="hidden sm:flex w-0 sm:w-[50%] flex-col items-center justify-center">
+        <div className="hidden md:flex w-0 sm:w-[50%] flex-col items-center justify-center">
+          <svg className={'absolute w-[450px] h-[450px]'} width="1057" height="1110" viewBox="0 0 1057 1110" xmlns="http://www.w3.org/2000/svg">
+            <path d="M728.084 111.493C617.793 61.2244 477.767 85.6827 349.591 127.284C221.66 169.027 105.333 227.771 76.9286 315.202C48.5242 402.634 108.042 518.753 136.617 649.383C165.192 780.013 163.211 925.051 234.843 998.947C306.423 1072.65 451.564 1075.02 545.624 1015.19C639.439 955.221 774.562 876.34 774.562 725.292C774.562 603.292 907.654 511.617 913.195 399.213C918.737 286.808 838.375 161.761 728.084 111.493Z" fill="#c5d9ca"/>
+            <path d="M728.084 111.493C617.793 61.2244 477.767 85.6827 349.591 127.284C221.66 169.027 105.333 227.771 76.9286 315.202C48.5242 402.634 108.042 518.753 136.617 649.383C165.192 780.013 163.211 925.051 234.843 998.947C306.423 1072.65 451.564 1075.02 545.624 1015.19C639.439 955.221 774.562 876.34 774.562 725.292C774.562 603.292 907.654 511.617 913.195 399.213C918.737 286.808 838.375 161.761 728.084 111.493Z" fill="black" fillOpacity="0.2"/>
+          </svg>
           <ImageToVideo
+            loadingElement={
+              <SvgSkeleton
+                svg={yourSvg}
+                isLoading={true}
+                variant={'light'}
+                color="#c5d9ca"
+                size={450}
+              />
+            }
             imageSrc="/robot.png"
             videos={[{ src: "/robot5.mp4" }, { src: "/robot6.mp4" }]}
             maskSrc={"/mask.svg"}
@@ -99,7 +127,6 @@ export const LoginModal: FC<LoginModalProps> = ({
 
         <AnimatedStar className={'hidden sm:block'} verticalPosition={'bottom'} horizontalPosition={'320px'} size={120}/>
         <AnimatedStar className={'hidden sm:block'}/>
-
         <div className='w-full sm:w-[50%] sm:pr-12 flex flex-col items-center justify-center'>
           <div className='w-full'>
             <motion.h1
